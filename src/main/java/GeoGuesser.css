@@ -1,0 +1,17 @@
+#map {
+	height: 100%;
+}
+
+html, body {
+	height: 90%;
+	width: 75%; margin : 10;
+	padding: 10;
+	margin: 10;
+}
+
+#knop {
+	width: 200px;
+	left: 850px;
+	top: 100px;
+	position: absolute;
+}
