@@ -7,7 +7,6 @@
 <head>
 <title>GeoGuesser</title>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
@@ -29,13 +28,14 @@
 	<div id="map"></div>
 
 	<div id="knop">
-		<button onclick="randomlocation()">Random location</button>
+		<button onclick="randomlocation()">Random Loaction</button>
 	</div>
 
-	<div id="pano"></div>
 
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=&v=weekly"></script>
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=&v=weekly"
+		async></script>
+
 
 
 </body>
