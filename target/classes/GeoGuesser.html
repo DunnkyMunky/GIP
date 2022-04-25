@@ -21,21 +21,84 @@
 
 
 
-<body>
-	<h1>THE GEOGUESSER GAME</h1>
+<body onload="sounds()">
 
 
+	<button id="login" onclick="login()">LOGIN</button>
 
-	<div id="map"></div>
+	<video autoplay muted loop id="earth">
+		<source src="earth.mp4" type="video/mp4">
+	</video>
 
-	<div id="knop">
-		<button onclick="randomlocation()">Random location</button>
+	<video autoplay muted loop id="jupiter">
+		<source src="Jupiter.mp4" type="video/mp4">
+	</video>
+
+	<div id="mainmenu">
+		<button id="play" onclick="play()">PLAY</button>
+		<button id="settings" onclick="settings()">SETTINGS</button>
+	</div>
+
+	<div id="settingsmenu">
+
+		<button id="back" onclick="back()">go back</button>
+		<p id="text1">Seconds Per Round</p>
+		<div class="slidecontainer1">
+			<input type="range" min="20" max="90" value="40" step="10"
+				class="slider" id="myRange1">
+			<p id=slidervalue1></p>
+		</div>
+		<p id="text2">Rounds Per Game</p>
+		<div class="slidecontainer2">
+			<input type="range" min="5" max="20" value="10" class="slider"
+				id="myRange2">
+			<p id=slidervalue2></p>
+
+		</div>
+
+
+	</div>
+
+
+	<div id="main">
+
+		<h1 id="header">GeoGuesser</h1>
+
+		<p id="countdown"></p>
+		<p id="rounds">test</p>
+		<p id="score"></p>
+		<p id="scorecountry"></p>
+		<p id="scoredistance"></p>
+		<p id="scoretime"></p>
+
+		<div class="mapguess">
+
+			<div class="mapcss" id="map"></div>
+
+			<button id="guess" class="guess" onclick="guess()">GUESS</button>
+
+		</div>
+
+
+	</div>
+
+	<div id="end">
+		<p id="finalscore"></p>
+		<button id="gomenu" onclick="gomenu()">go back to menu</button>
 	</div>
 
 	<div id="pano"></div>
 
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=&v=weekly"></script>
+		
+		
+		
+		
+		
+		
+		
+
 
 
 </body>

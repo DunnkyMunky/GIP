@@ -1,6 +1,5 @@
 package geoguesser;
 
-import java.text.DecimalFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,8 +15,6 @@ import com.grum.geocalc.Point;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class GeoGuesserController {
-	private static final DecimalFormat df = new DecimalFormat("0.00");
-
 	@Autowired
 	private GeoGuesserRepository georepo;
 

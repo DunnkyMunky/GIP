@@ -1,48 +1,272 @@
 let map;
-
-const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-let labelIndex = 0;
+let markers = [];
 let alglat;
 let alglng;
 let locationrandom;
+let algpanorama;
+let randomcountry;
+let markercountry;
+var score = 0;
+var aantal = 1;
+let algTimer;
+let algtimeleft;
+let afstand;
+let totalscore;
 
 
-google.maps.event.addDomListener(window, 'load', initialize);
+const sv = new google.maps.StreetViewService();
 
-function initialize() {
+var MenuSound = new Audio("earthmusic.mp4");
+MenuSound.volume = 0.2;
+var HoverSound = new Audio("hover.mp4");
+HoverSound.volume = 0.2;
+var WhooshSound = new Audio("whoosh.mp4");
+WhooshSound.volume = 0.3;
+var WarpSound = new Audio("warp.mp4");
+WarpSound.volume = 0.2;
+var TimerSound = new Audio("timer.wav");
+TimerSound.volume = 0.4;
+var CorrectSound = new Audio("correct.mp4");
+CorrectSound.volume = 0.3;
+var WrongSound = new Audio("wrong.mp4");
+WrongSound.volume = 0.25;
+var WinnerSound = new Audio("winner.mp4");
 
-	const fenway = { lat: 42.345573, lng: -71.098326 };
+document.getElementById("guess").disabled = true;
 
-	const midden = { lat: 0, lng: 0 };
-	const map = new google.maps.Map(document.getElementById("map"), {
-		center: midden,
-		zoom: 1.5,
-	});
-	google.maps.event.addListener(map, "click", (event) => {
-		addMarker(event.latLng, map);
-		console.log("de coordinaten van deze marker zijn " + location)
+function sounds() {
 
-	});
+	var playBtn = document.getElementById('play')
+	var settingsBtn = document.getElementById('settings')
+	var backBtn = document.getElementById('back')
 
-	const panorama = new google.maps.StreetViewPanorama(
-		document.getElementById("pano"),
-		{
+	playBtn.addEventListener('mouseover', function() {
 
-			position: fenway,
-			pov: {
-				heading: 34,
-				pitch: 10,
-			},
+		HoverSound.play();
+
+	}, false);
+
+	playBtn.addEventListener('mouseleave', function() {
+		HoverSound.pause();
+		HoverSound.currentTime = 0;
+	}, false);
+
+	settingsBtn.addEventListener('mouseover', function() {
+
+		HoverSound.play();
+
+	}, false);
+
+	settingsBtn.addEventListener('mouseleave', function() {
+		HoverSound.pause();
+		HoverSound.currentTime = 0;
+	}, false);
+
+	backBtn.addEventListener('mouseover', function() {
+
+		HoverSound.play();
+
+	}, false);
+
+	backBtn.addEventListener('mouseleave', function() {
+		HoverSound.pause();
+		HoverSound.currentTime = 0;
+	}, false);
+
+}
+
+
+
+function login() {
+	MenuSound.play();
+	document.getElementById("mainmenu").style.display = "block";
+	document.getElementById("login").style.display = "none";
+
+
+}
+
+
+function play() {
+	setTimeout(randomlocation, 2800);
+	document.getElementById("jupiter").style.display = "none";
+	document.getElementById("mainmenu").style.display = "none";
+	document.getElementById('earth').style.animation = "zoom 3s 1";
+	WarpSound.play();
+
+
+}
+
+function settings() {
+	document.getElementById("jupiter").style.display = "block";
+	document.getElementById("mainmenu").style.display = "none";
+	document.getElementById('earth').style.animation = "leftrightearth 0.5s ";
+	document.getElementById('jupiter').style.animation = "rightleftjup 0.5s ";
+	document.getElementById("earth").style.filter = "blur(10px)";
+	document.getElementById("jupiter").style.filter = "blur(10px) brightness(50%)";
+
+	WhooshSound.play();
+
+	setTimeout(() => {
+		document.getElementById("settingsmenu").style.display = "block";
+		document.getElementById("earth").style.filter = "blur(0px)";
+		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
+
+	}, 500);
+
+
+}
+
+var slider1 = document.getElementById("myRange1");
+var output1 = document.getElementById("slidervalue1");
+output1.innerHTML = slider1.value;
+
+slider1.oninput = function() {
+	output1.innerHTML = this.value;
+}
+
+var slider2 = document.getElementById("myRange2");
+var output2 = document.getElementById("slidervalue2");
+output2.innerHTML = slider2.value;
+
+slider2.oninput = function() {
+	output2.innerHTML = this.value;
+}
+
+
+function back() {
+	document.getElementById("earth").style.display = "block";
+	document.getElementById("settingsmenu").style.display = "none";
+	document.getElementById('earth').style.animation = "rightleftearth 0.5s ";
+	document.getElementById('jupiter').style.animation = "leftrightjup 0.5s ";
+	document.getElementById("earth").style.filter = "blur(5px)";
+	document.getElementById("jupiter").style.filter = "blur(5px) brightness(50%)";
+
+	WhooshSound.play();
+
+	setTimeout(() => {
+		document.getElementById("jupiter").style.display = "none";
+		document.getElementById("mainmenu").style.display = "block";
+		document.getElementById("earth").style.filter = "blur(0px)";
+		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
+
+	}, 490);
+
+
+}
+
+//function initialize() {
+//
+//	document.getElementById("earth").style.display = "none";
+//	document.getElementById("main").style.display = "block";
+//	MenuSound.pause();
+//	MenuSound.currentTime = 0;
+//
+//	const fenway = { lat: 42.345573, lng: -71.098326 };
+//
+//	const midden = { lat: 0, lng: 0, };
+//	const map = new google.maps.Map(document.getElementById("map"), {
+//
+//		disableDefaultUI: true,
+//		center: midden,
+//		zoom: 1,
+//	});
+//
+//	google.maps.event.addListener(map, "click", (event) => {
+//		deleteMarker(event.latLng, map);
+//		addMarker(event.latLng, map);
+//		document.getElementById("guess").disabled = false;
+//		console.log("de coordinaten van deze marker zijn " + location)
+//
+//	});
+//
+//
+//	const panorama = new google.maps.StreetViewPanorama(
+//		document.getElementById("pano"),
+//		{
+//			disableDefaultUI: true,
+//			showRoadLabels: false,
+//
+//			position: fenway,
+//			pov: {
+//				heading: 34,
+//				pitch: 10,
+//			},
+//
+//		}
+//
+//	);
+//
+//	map.setStreetView(panorama);
+//}
+
+
+
+function countdown() {
+
+	let timeleft = slider1.value;
+	let Timer = setInterval(function() {
+		algtimeleft = timeleft;
+
+
+
+
+		if (timeleft <= 11) {
+
+			TimerSound.play();
+			document.getElementById("countdown").style.animation = "alarm 1s infinite";
+
+			document.getElementById("countdown").innerHTML = timeleft;
+
+		} if (timeleft <= 0) {
+			TimerSound.pause();
+			TimerSound.currentTime = 0;
+			clearInterval(Timer);
+			randomlocation();
+			document.getElementById("countdown").innerHTML = timeleft;
+			document.getElementById("countdown").style.animation = "none 1s infinite";
+
+		} else {
+
+			document.getElementById("countdown").innerHTML = timeleft;
+
 		}
-	);
 
-	map.setStreetView(panorama);
+		timeleft -= 1;
+
+	}, 1000);
+	algTimer = Timer;
+
 }
 
 
 function randomlocation() {
+	var rounds = slider2.value;
+	document.getElementById("earth").style.display = "none";
+	document.getElementById("main").style.display = "block";
+	MenuSound.pause();
+	MenuSound.currentTime = 0;
+	TimerSound.pause();
+	TimerSound.currentTime = 0;
+
+	countdown();
+
+	document.getElementById('rounds').innerHTML = "Round " + aantal + "/" + rounds;
 
 
+	console.log("oekaboeka" + aantal);
+	if (aantal > rounds) {
+
+		document.getElementById("main").style.display = "none";
+		document.getElementById("pano").style.display = "none";
+		document.getElementById("end").style.display = "block";
+		document.getElementById("finalscore").innerHTML = "Congratulations! You have " + totalscore + " points";
+
+
+		clearInterval(algTimer);
+		WinnerSound.play();
+
+	}
+	aantal++
 
 	axios.get('http://localhost:8080/country')
 		.then(function(response) {
@@ -50,20 +274,38 @@ function randomlocation() {
 			alglat = lat;
 			let lng = response.data.lng;
 			alglng = lng;
-
-
 			var location = new google.maps.LatLng({ lat: lat, lng: lng })
-			locationrandom = location
+			locationrandom = location;
+
+			sv.getPanorama({
+				location: locationrandom, radius: 100,
+			})
+				.then(processSVData)
+				.catch((e) =>
+					console.error("Nieuwe locatie"),
+					sv.getPanorama({ location: locationrandom, radius: 1000000, })
+						.then(processSVData)
+				)
+
+
 
 			const geocoder = new google.maps.Geocoder();
 			const midden = { lat: 0, lng: 0 };
 			const map = new google.maps.Map(document.getElementById("map"), {
+				disableDefaultUI: true,
 				center: midden,
-				zoom: 1.5,
+				zoom: 1,
 			});
+
+
 			google.maps.event.addListener(map, "click", (event) => {
+				deleteMarker(event.latLng, map);
 				addMarker(event.latLng, map);
+				document.getElementById("guess").disabled = false;
+
 			});
+
+
 			geocoder
 				.geocode({ location: location })
 				.then((response) => {
@@ -74,60 +316,62 @@ function randomlocation() {
 						});
 						var country = filtered_array.length ? filtered_array[0].long_name : "";
 						console.log("we zitten in " + country);
+						randomcountry = country;
+
 
 					} else {
 						window.alert("No results found");
 					}
+
 				})
 				.catch((e) => window.alert("Geocoder failed due to: " + e));
 
+
 			const locatie = { lat: lat, lng: lng };
-			
-			// google api latlonglocatie -> stadsnaam
 
 			const panorama = new google.maps.StreetViewPanorama(
 				document.getElementById("pano"),
 
-				{
 
+				{
+					disableDefaultUI: true,
+					showRoadLabels: false,
 					position: locatie,
 					pov: {
 						heading: 34,
 						pitch: 10,
 					},
-				}
-			);
+
+				},
+
+			)
+
+			algpanorama = panorama;
 
 			map.setStreetView(panorama);
-			google.maps.event.addListener(map, "click", (event) => {
-				addMarker(event.latLng, map);
-			});
 
 			console.log("de coordinaten van deze randompositie zijn " + location)
 
 		}
-
-
 		)
 }
 
 
-
 function addMarker(location, map) {
 	const geocoder = new google.maps.Geocoder();
-	new google.maps.Marker({
+	const marker = new google.maps.Marker({
 		position: location,
-		label: labels[labelIndex++ % labels.length],
 		map: map
 	});
+	markers.push(marker);
 
 	axios.get('http://localhost:8080/afstand?lat=' + alglat + '&lng=' + alglng + '&lat2=' + location.lat() + '&lng2=' + location.lng())
 		.then(function(response) {
+			kmafstand = response.data / 1000;
 
-			
-			
+			console.log(locationrandom + " ligt " + kmafstand + " km " + location);
+			afstand = Math.round(kmafstand);
 
-			console.log(locationrandom + " ligt " + response.data + " meter van " + location)
 		})
 
 	geocoder
@@ -135,18 +379,168 @@ function addMarker(location, map) {
 		.then((response) => {
 			if (response.results[0]) {
 
-
 				var filtered_array = response.results[0].address_components.filter(function(address_component) {
 					return address_component.types.includes("country");
 				});
 				var country = filtered_array.length ? filtered_array[0].long_name : "";
 				console.log("we zitten in " + country);
+				markercountry = country;
 
 			} else {
 				window.alert("No results found");
 			}
 		})
 		.catch((e) => window.alert("Geocoder failed due to: " + e));
+}
+
+function setMapOnAll(map) {
+	for (let i = 0; i < markers.length; i++) {
+		markers[i].setMap(map);
+	}
+}
+
+function hideMarkers() {
+	setMapOnAll(null);
+}
+
+function deleteMarker() {
+	hideMarkers();
+	markers = [];
+}
+
+function scoresystem() {
+	reflow();
+
+	if (randomcountry == markercountry) {
+		score = score + 200;
+		document.getElementById('score').innerHTML = "score: " + score;
+		document.getElementById('scorecountry').innerHTML = "country + 200";
+		document.getElementById('scorecountry').style.animation = "fade 4.10s";
+
+		CorrectSound.play();
+
+	} else {
+		score = score;
+		document.getElementById('score').innerHTML = "score: " + score;
+		WrongSound.play();
+
+	}
+
+	if (afstand < 2500) {
+		kmscore = Math.round(100000 / afstand);
+		score = score + kmscore
+		document.getElementById('score').innerHTML = "score: " + score;
+		document.getElementById('scoredistance').innerHTML = "distance + " + kmscore;
+		document.getElementById('scoredistance').style.animation = "fade 2.80s";
+
+
+	}
+
+	if (algtimeleft >= 12 && randomcountry == markercountry) {
+		timescore = Math.round(algtimeleft / 0.1);
+		score = score + timescore;
+		document.getElementById('score').innerHTML = "score: " + score;
+		document.getElementById('scoretime').innerHTML = "timebonus + " + timescore;
+		document.getElementById('scoretime').style.animation = "fade 3.70s";
+	}
+
+	if (score > 10000000) {
+		WinnerSound.play();
+
+	}
+	totalscore = score;
+
 
 }
+
+
+function guess() {
+	document.getElementById("guess").disabled = true;
+
+	console.log("random country: " + randomcountry)
+	console.log("marker country: " + markercountry)
+
+	scoresystem();
+
+	TimerSound.pause();
+	TimerSound.currentTime = 0;
+	clearInterval(algTimer);
+	randomlocation();
+
+	console.log(afstand + "km");
+
+
+
+}
+
+
+function gomenu() {
+	MenuSound.play();
+	aantal = 0;
+	totalscore = 0;
+	document.getElementById("earth").style.display = "block";
+	document.getElementById("mainmenu").style.display = "block";
+	document.getElementById("end").style.display = "none";
+	WinnerSound.pause();
+	WinnerSound.currentTime = 0;
+
+
+
+
+
+}
+
+function processSVData({ data }) {
+	const location = data.location;
+	algpanorama.setPano(location.pano);
+	algpanorama.setPov({
+		heading: 270,
+		pitch: 0,
+	});
+	algpanorama.setVisible(true);
+
+}
+
+function reflow() {
+	//	reflow scorecountry animation
+	var reflow1 = document.getElementById('scorecountry');
+	reflow1.style.animation = 'none';
+	//triggers reflow
+	reflow1.offsetHeight;
+	reflow1.style.animation = null;
+
+	//	reflow scoredistance animation	
+	var reflow1 = document.getElementById('scoredistance');
+	reflow1.style.animation = 'none';
+	//triggers reflow
+	reflow1.offsetHeight;
+	reflow1.style.animation = null;
+
+	//	reflow scoretime animation	
+	var reflow1 = document.getElementById('scoretime');
+	reflow1.style.animation = 'none';
+	//triggers reflow
+	reflow1.offsetHeight;
+	reflow1.style.animation = null;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//Marker country location aanpassen: soms vind hij geen country wegens geen googlemaps locatie
+// aanpassen zodat je niet meerdere keren achterelkaar in hetzelfde land komt (vaak in China)
+//event listener verwijderen -> zodat je niet meerdere keren kunt antwoorden
+//bug: als je terug naar menu gaat speelt de zoom in animatie
+//bug: kan meerdere keren op play klikken.
+//inlogscherm / create and join roomm
+//hints(voor punten) in het spel
+
 

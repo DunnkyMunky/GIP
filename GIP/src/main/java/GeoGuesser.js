@@ -2,6 +2,12 @@ let map;
 
 const labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let labelIndex = 0;
+let alglat;
+let alglng;
+let locationrandom;
+
+
+const sv = new google.maps.StreetViewService();
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -9,13 +15,15 @@ function initialize() {
 
 	const fenway = { lat: 42.345573, lng: -71.098326 };
 
-	const midden = { lat: 50.5010789, lng: 4.4764595 };
+	const midden = { lat: 0, lng: 0, radius: 850000 };
 	const map = new google.maps.Map(document.getElementById("map"), {
 		center: midden,
-		zoom: 8,
+		zoom: 1.5,
 	});
 	google.maps.event.addListener(map, "click", (event) => {
 		addMarker(event.latLng, map);
+		console.log("de coordinaten van deze marker zijn " + location)
+
 	});
 
 	const panorama = new google.maps.StreetViewPanorama(
@@ -27,27 +35,41 @@ function initialize() {
 				heading: 34,
 				pitch: 10,
 			},
+			
 		}
+
 	);
 
 	map.setStreetView(panorama);
 }
 
-
+setInterval(randomlocation, 11000);
 function randomlocation() {
+
+	var timeleft = 10;
+	var downloadTimer = setInterval(function() {
+		if (timeleft <= 0) {
+			clearInterval(downloadTimer);
+		}
+		document.getElementById("progressBar").value = 10 - timeleft;
+		timeleft -= 1;
+	}, 1000);
 
 	axios.get('http://localhost:8080/country')
 		.then(function(response) {
 			let lat = response.data.lat;
+			alglat = lat;
 			let lng = response.data.lng;
-
+			alglng = lng;
 
 			var location = new google.maps.LatLng({ lat: lat, lng: lng })
+			locationrandom = location
 
 			const geocoder = new google.maps.Geocoder();
-			map = new google.maps.Map(document.getElementById("map"), {
-				center: { lat: lat, lng: lng },
-				zoom: 12,
+			const midden = { lat: 0, lng: 0 };
+			const map = new google.maps.Map(document.getElementById("map"), {
+				center: midden,
+				zoom: 1.5,
 			});
 			google.maps.event.addListener(map, "click", (event) => {
 				addMarker(event.latLng, map);
@@ -69,8 +91,27 @@ function randomlocation() {
 				})
 				.catch((e) => window.alert("Geocoder failed due to: " + e));
 
-			console.log("de coordinaten van deze marker zijn " + location)
+			const locatie = { lat: lat, lng: lng };
 
+			const panorama = new google.maps.StreetViewPanorama(
+				document.getElementById("pano"),
+
+				{
+					position: locatie,
+					pov: {
+						heading: 34,
+						pitch: 10,
+					},
+					
+				}
+			);
+
+			map.setStreetView(panorama);
+			google.maps.event.addListener(map, "click", (event) => {
+				addMarker(event.latLng, map);
+			});
+
+			console.log("de coordinaten van deze randompositie zijn " + location)
 
 		}
 
@@ -88,7 +129,11 @@ function addMarker(location, map) {
 		map: map
 	});
 
-	console.log("De lat is " + location.lat() + " de lng is " + location.lng())
+	axios.get('http://localhost:8080/afstand?lat=' + alglat + '&lng=' + alglng + '&lat2=' + location.lat() + '&lng2=' + location.lng())
+		.then(function(response) {
+
+			console.log(locationrandom + " ligt " + response.data + " meter van " + location)
+		})
 
 	geocoder
 		.geocode({ location: location })
@@ -108,18 +153,5 @@ function addMarker(location, map) {
 		})
 		.catch((e) => window.alert("Geocoder failed due to: " + e));
 
-
-	console.log("de coordinaten van deze marker zijn " + location)
-
-
 }
-
-
-
-
-
-
-
-
-
 

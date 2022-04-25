@@ -1,23 +1,303 @@
-#map {
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0.01%;
+}
+
+#main {
+	display: none;
+}
+
+#mainmenu {
+	display: none;
+}
+#settingsmenu {
+	display: none;
+}
+
+#text1{
 	position: absolute;
-	left: 800px;
-	top: 80px;
-	height: 80%;
+	color: lightyellow;
+	font-size:150%;
+	left: 10%;
+	top: 10%;
+}
+
+#text2{
+	position: absolute;
+	color: lightyellow;
+	font-size:150%;
+	left: 11%;
+	top: 30%;
+}
+
+.slidecontainer1{
+	top:20%;
+	left:5%;
+	position: absolute;
 	width: 45%;
+	
+}
+
+.slidecontainer2{
+	top:40%;
+	left:5%;
+	position: absolute;
+	width: 45%;
+	
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 50%;
+  height: 20px;
+  background-color: black;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 70px;
+  height: 70px;
+  background: url('star.png');
+  cursor: pointer;
+}
+
+    
+#slidervalue1{
+	position: absolute;
+	color: lightyellow;
+	
+}
+
+#slidervalue2{
+	position: absolute;
+	color: lightyellow;
+	
+}
+
+#jupiter{
+	display: none;
+}
+
+#login {
+	color: white;
+	background-color: black;
+	position: absolute;
+	left: 42.5%;
+	top: 30%;
+	height: 5%;
+	width: 15%;
+	z-index: 2;
+}
+
+#earth {
+	position: fixed;
+	top: -12%;
+	left: -8%;
+	width: 115%;
+}
+
+#jupiter{
+	position: fixed;
+	top: -12%;
+	left: -8%;
+	width: 115%;
+		
+}
+
+#play {
+	color: orange;
+	background-color: black;
+	position: absolute;
+	left: 5%;
+	top: 20%;
+	height: 5%;
+	width: 15%;
+	z-index: 2;
+}
+
+#settings {
+	color: orange;
+	background-color: black;
+	position: absolute;
+	left: 5%;
+	top: 30%;
+	height: 5%;
+	width: 15%;
+	z-index: 2;
+}
+
+#back {
+	color: white;
+	background-color: black;
+	position: absolute;
+	left: 3%;
+	top: 5%;
+	height: 5%;
+	width: 15%;
+	z-index: 2;
+}
+
+
+#play:hover{
+	color: black;
+	background-color: orange;
+}
+
+#settings:hover{
+	color: black;
+	background-color: orange;
+}
+
+#back:hover{
+	color: black;
+	background-color: white;
+}
+
+
+#header {
+	position: absolute;
+	opacity: 60%;
+	background-color: black;
+	color: red;
+	z-index: 2;
+	margin: 0.0001%;
+	height: 10%;
+	width: 100%;
+	z-index: 2;
+	font-family: Papyrus;
+    font-size: 300%;
+	
+}
+
+#countdown {
+	position: absolute;
+	z-index: 2;
+	height: 4%;
+	width: 2.8%;
+	left: 90%;
+	background-color: white;
+	color: black;
+	font-size: 250%;
+	margin: 0.2%;
+	border-radius: 100%;
+	padding: 1.4%;
+	text-align: center;
+}
+#rounds {
+	position: absolute;
+	z-index: 2;
+	height: 4%;
+	width: 12.5%;
+	left: 20%;
+	color: white;
+	font-size: 250%;
+	margin: 0.1%;
+	padding: 1%;
+
+}
+
+#score {
+	position: absolute;
+	z-index: 2;
+	height: 4%;
+	width: 12.5%;
+	left: 60%;
+	color: white;
+	font-size: 250%;
+	margin: 0.1%;
+	padding: 1%;
+	text-align: center;
+}
+
+#scorecountry {
+	position: absolute;
+	z-index: 2;
+	height: 4%;
+	width: 12.5%;
+	color: green;
+	font-size: 125%;
+	margin: 0.1%;
+	padding: 1%;
+	opacity: 0%;
+}
+
+#scoredistance {
+	position: absolute;
+	z-index: 2;
+	height: 4%;
+	width: 12.5%;
+	top: 2%;
+	color: green;
+	font-size: 125%;
+	margin: 0.1%;
+	padding: 1%;
+	opacity: 0%;
+}
+
+#scoretime {
+	position: absolute;
+	z-index: 2;
+	height: 4%;
+	width: 12.5%;
+	top: 4%;
+	color: green;
+	font-size: 125%;
+	margin: 0.1%;
+	padding: 1%;
+	opacity: 0%;
+}
+
+.mapcss {
+	position: absolute;
+	right: 0%;
+	top: 10%;
+	height: 25%;
+	width: 20%;
+	z-index: 2;
+	opacity: 40%;
+	transition: width 1s, height 1s;
+}
+
+.guess {
+	color: white;
+	background-color: black;
+	position: absolute;
+	right: 0%;
+	top: 35%;
+	height: 5%;
+	width: 20%;
+	z-index: 2;
+	opacity: 40%;
+	transition: width 1s, height 1s, top 1s;
+}
+/* makes the buttons opacity 100% and makes the cursor a pointer when the button is enabled */
+.guess:enabled {
+	opacity: 100%;
+	cursor: pointer;
+}
+
+.guess:disabled {
+	background-color: green;
+}
+
+.mapguess:hover .mapcss {
+	opacity: 100%;
+	width: 30%;
+	height: 38%;
+}
+
+.mapguess:hover .guess {
+	width: 30%;
+	height: 8%;
+	top: 48%;
 }
 
 #pano {
 	height: 100%;
-	width: 80%;
-	
-}
-
-html, body {
-	height: 90%;
-	width: 75%;
-	margin: 10;
-	padding: 10;
-	margin: 10;
+	width: 100%;
+	z-index: 1;
 }
 
 #knop {
@@ -25,4 +305,97 @@ html, body {
 	left: 450px;
 	top: 28px;
 	position: absolute;
+}
+
+
+
+#finalscore{
+	position: absolute;
+	color: green;
+	font-size:150%;
+	left: 40%;
+	top: 40%;
+	
+
+}
+#gomenu{
+	color: white;
+	background-color: black;
+	position: absolute;
+	left: 42%;
+	top: 60%;
+	height: 5%;
+	width: 15%;	
+}
+
+#end{
+	display: none;
+}
+
+
+
+
+
+
+/* makes an appear and disappear animation */
+@keyframes fade { 
+	0% {opacity: 0%; left: 71%;}
+	50%{opacity: 100%; left: 72%;}
+	100%{opacity: 0%; left: 73%;}
+}
+/* makes a blinking animation */
+@keyframes alarm { 
+	0% {background-color: white;}
+	50%{background-color:red;}
+	100%{background-color:white;}
+}
+
+/* makes a zoom in animation */
+@keyframes zoom { 
+	0% {transform: scale(1, 1);}
+	25% {transform: scale(0.90, 0.90);}
+	100%{transform: scale(10, 10);}
+	
+	
+}
+
+/* makes a left to right animation (for earth)*/
+@keyframes leftrightearth { 
+	0% {left: -8%;}
+	100%{left: -115%;}
+	
+}
+/* makes a right to left animation (for earth)*/
+@keyframes rightleftearth { 
+	0% {left: -115%;}
+	100%{left: -8%;}
+	
+}
+/* makes a right to left animation (for Jupiter)*/
+@keyframes rightleftjup { 
+	0% {left: 100%;}
+	100%{left: -8%;}
+	
+}
+/* makes a left to right animation (for earth)*/
+@keyframes leftrightjup { 
+	0% {left: -8%;}
+	100%{left: 100%;}
+	
+}
+
+
+
+/*  disables/hides information about location in footer */
+a[href^="http://maps.google.com/maps"], a[href^="https://maps.google.com/maps"],
+	a[href^="https://www.google.com/maps"] {
+	display: none;
+}
+
+.gm-bundled-control .gmnoprint {
+	display: block;
+}
+
+.gmnoprint:not(.gm-bundled-control) {
+	display: none;
 }

@@ -26,3 +26,13 @@ html, body {
 	top: 28px;
 	position: absolute;
 }
+
+#progressBar{
+	position: absolute;
+	left: 800px;
+	top: 0px;
+	height: 10%;
+	width: 45%;
+	
+	
+}
