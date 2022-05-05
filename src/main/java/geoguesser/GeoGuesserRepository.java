@@ -19,5 +19,3 @@ public interface GeoGuesserRepository extends CrudRepository<GeoGuesserEntities,
 
 
 }
-
-

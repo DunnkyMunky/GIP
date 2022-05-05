@@ -12,10 +12,15 @@ let algTimer;
 let algtimeleft;
 let afstand;
 let totalscore;
+let algusername;
+let alggamename;
+
 
 
 const sv = new google.maps.StreetViewService();
 
+var WelcomeSound = new Audio("welcome.mp4");
+WelcomeSound.volume = 0.25;
 var MenuSound = new Audio("earthmusic.mp4");
 MenuSound.volume = 0.2;
 var HoverSound = new Audio("hover.mp4");
@@ -37,7 +42,7 @@ document.getElementById("guess").disabled = true;
 function sounds() {
 
 	var playBtn = document.getElementById('play')
-	var settingsBtn = document.getElementById('settings')
+	var lobbyBtn = document.getElementById('lobby')
 	var backBtn = document.getElementById('back')
 
 	playBtn.addEventListener('mouseover', function() {
@@ -51,13 +56,13 @@ function sounds() {
 		HoverSound.currentTime = 0;
 	}, false);
 
-	settingsBtn.addEventListener('mouseover', function() {
+	lobbyBtn.addEventListener('mouseover', function() {
 
 		HoverSound.play();
 
 	}, false);
 
-	settingsBtn.addEventListener('mouseleave', function() {
+	lobbyBtn.addEventListener('mouseleave', function() {
 		HoverSound.pause();
 		HoverSound.currentTime = 0;
 	}, false);
@@ -79,11 +84,207 @@ function sounds() {
 
 function login() {
 	MenuSound.play();
-	document.getElementById("mainmenu").style.display = "block";
+	WelcomeSound.play();
+	document.getElementById("loginmenu").style.display = "block";
 	document.getElementById("login").style.display = "none";
 
 
+
+
 }
+
+
+
+function createaccount() {
+
+
+	randomid = Math.floor(Math.random() * 100000);
+
+
+
+	var username = document.getElementById("loginbox");
+	var usernameoutput = document.getElementById("usernamevalue");
+	usernameoutput.innerHTML = username.value;
+	var password = document.getElementById("passwordbox").value;
+
+	axios.get('http://localhost:8080/login?userID=' + randomid + '&username=' + username.value + '&password=' + password)
+		.then(function(response) {
+			speler1 = response.data.speler1;
+			user1 = username.value;
+			console.log("username.value= " + username.value);
+			console.log("randomid= " + randomid);
+			console.log("response.data.speler1= " + response.data.user)
+			console.log(response);
+
+			if (response.data.user == "error" || response.data.password == "error" && response.data.correct == 0) {
+
+				document.getElementById("loginerror").style.display = "block";
+				console.log("ERROR!!!");
+
+
+			} else if (response.data.correct == 1) {
+				console.log('test correct')
+				document.getElementById("mainmenu").style.display = "block";
+				document.getElementById("loginmenu").style.display = "none";
+				document.getElementById("usernamevalue").style.display = "block";
+				//				document.getElementById("profilepicture").style.display = "block";
+				document.getElementById("loginerror").style.display = "none";
+				algusername = username.value;
+
+			} else {
+
+				document.getElementById("mainmenu").style.display = "block";
+				document.getElementById("loginmenu").style.display = "none";
+				document.getElementById("usernamevalue").style.display = "block";
+				document.getElementById("loginerror").style.display = "none";
+
+			}
+
+
+		})
+	username.oninput = function() {
+		usernameoutput.innerHTML = this.value;
+
+
+	}
+
+
+}
+
+
+
+
+
+const rooms = [];
+function createroom() {
+
+
+	randomid = Math.floor(Math.random() * 100000);
+
+	gamename = document.getElementById("roomnamevalue");
+
+
+	var ul = document.getElementById("roomlist");
+	var li = document.createElement("li");
+	var btn = document.createElement("button");
+	var closebtn = document.createElement("button");
+
+
+
+	axios.get('http://localhost:8080/createroom?gameid=' + randomid + '&gamename=' + gamename.value + '&user=' + algusername)
+		.then(function(response) {
+
+			alggamename = gamename.value;
+
+
+
+			li.appendChild(document.createTextNode(gamename.value));
+			li.appendChild(btn);
+			li.appendChild(closebtn);
+			ul.appendChild(li);
+			btn.classList.add("joinbutton");
+			btn.innerText = "Join";
+			ul.appendChild(btn);
+			closebtn.classList.add("closebutton");
+			closebtn.innerText = "X";
+			ul.appendChild(closebtn);
+
+
+			refresh();
+
+
+
+
+
+		})
+
+	backlobby();
+
+}
+
+
+function refresh() {
+
+	const rooms = [];
+
+	var ul = document.getElementById("roomlist");
+
+
+	while (ul.firstChild) {
+		ul.removeChild(ul.firstChild);
+	}
+
+
+	axios.get('http://localhost:8080/room')
+		.then(function(response) {
+
+
+
+
+
+			for (let i = 0; i < response.data.length; i++) {
+
+
+				var li = document.createElement("li");
+				var btn = document.createElement("button");
+				var closebtn = document.createElement("button");
+
+				rooms.push(response.data[i].gamename)
+
+				li.appendChild(document.createTextNode(rooms[i]));
+				li.appendChild(btn);
+				ul.appendChild(btn);
+				li.appendChild(closebtn);
+				ul.appendChild(closebtn);
+				ul.appendChild(li);
+				btn.classList.add("joinbutton");
+				btn.innerText = "Join";
+				closebtn.classList.add("closebutton");
+				closebtn.innerText = "X";
+
+				closebtn.addEventListener("click", closeroom);
+
+
+			}
+
+
+
+
+
+			console.log(rooms)
+
+
+
+			console.log(algusername);
+
+
+		})
+
+
+
+}
+
+
+
+//function closeroom() {
+//
+//	axios.get('http://localhost:8080/createroom?gameid=' + randomid + '&gamename=' + gamename.value + '&user=' + algusername)
+//		.then(function(response) {
+//
+//		if(response.data.gameready == false){
+//			
+//			
+//			
+//		}
+//
+//
+//
+//
+//		})
+//
+//
+//}
+
 
 
 function play() {
@@ -96,7 +297,9 @@ function play() {
 
 }
 
-function settings() {
+
+
+function lobby() {
 	document.getElementById("jupiter").style.display = "block";
 	document.getElementById("mainmenu").style.display = "none";
 	document.getElementById('earth').style.animation = "leftrightearth 0.5s ";
@@ -107,11 +310,16 @@ function settings() {
 	WhooshSound.play();
 
 	setTimeout(() => {
-		document.getElementById("settingsmenu").style.display = "block";
+		document.getElementById("lobbymenu").style.display = "block";
 		document.getElementById("earth").style.filter = "blur(0px)";
 		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
 
 	}, 500);
+
+}
+
+function room() {
+	document.getElementById("roommenu").style.display = "block";
 
 
 }
@@ -133,13 +341,15 @@ slider2.oninput = function() {
 }
 
 
+
 function back() {
 	document.getElementById("earth").style.display = "block";
-	document.getElementById("settingsmenu").style.display = "none";
+	document.getElementById("lobbymenu").style.display = "none";
 	document.getElementById('earth').style.animation = "rightleftearth 0.5s ";
 	document.getElementById('jupiter').style.animation = "leftrightjup 0.5s ";
 	document.getElementById("earth").style.filter = "blur(5px)";
 	document.getElementById("jupiter").style.filter = "blur(5px) brightness(50%)";
+	document.getElementById("roommenu").style.display = "none";
 
 	WhooshSound.play();
 
@@ -150,6 +360,16 @@ function back() {
 		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
 
 	}, 490);
+
+
+}
+
+function backlobby() {
+
+	document.getElementById("jupiter").style.display = "block";
+	document.getElementById("mainmenu").style.display = "none";
+	document.getElementById("lobbymenu").style.display = "block";
+	document.getElementById("roommenu").style.display = "none";
 
 
 }
@@ -486,8 +706,6 @@ function gomenu() {
 
 
 
-
-
 }
 
 function processSVData({ data }) {
@@ -535,12 +753,11 @@ function reflow() {
 
 
 
-//Marker country location aanpassen: soms vind hij geen country wegens geen googlemaps locatie
 // aanpassen zodat je niet meerdere keren achterelkaar in hetzelfde land komt (vaak in China)
 //event listener verwijderen -> zodat je niet meerdere keren kunt antwoorden
 //bug: als je terug naar menu gaat speelt de zoom in animatie
 //bug: kan meerdere keren op play klikken.
 //inlogscherm / create and join roomm
-//hints(voor punten) in het spel
+//extra: profielfoto
 
 
