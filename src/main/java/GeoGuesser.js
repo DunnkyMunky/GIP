@@ -167,7 +167,6 @@ function createroom() {
 	var ul = document.getElementById("roomlist");
 	var li = document.createElement("li");
 	var btn = document.createElement("button");
-	var closebtn = document.createElement("button");
 
 
 
@@ -180,14 +179,10 @@ function createroom() {
 
 			li.appendChild(document.createTextNode(gamename.value));
 			li.appendChild(btn);
-			li.appendChild(closebtn);
 			ul.appendChild(li);
 			btn.classList.add("joinbutton");
 			btn.innerText = "Join";
 			ul.appendChild(btn);
-			closebtn.classList.add("closebutton");
-			closebtn.innerText = "X";
-			ul.appendChild(closebtn);
 
 
 			refresh();
@@ -227,23 +222,15 @@ function refresh() {
 
 				var li = document.createElement("li");
 				var btn = document.createElement("button");
-				var closebtn = document.createElement("button");
 
 				rooms.push(response.data[i].gamename)
 
 				li.appendChild(document.createTextNode(rooms[i]));
 				li.appendChild(btn);
 				ul.appendChild(btn);
-				li.appendChild(closebtn);
-				ul.appendChild(closebtn);
 				ul.appendChild(li);
 				btn.classList.add("joinbutton");
 				btn.innerText = "Join";
-				closebtn.classList.add("closebutton");
-				closebtn.innerText = "X";
-
-				closebtn.addEventListener("click", closeroom);
-
 
 			}
 
@@ -265,25 +252,6 @@ function refresh() {
 }
 
 
-
-//function closeroom() {
-//
-//	axios.get('http://localhost:8080/createroom?gameid=' + randomid + '&gamename=' + gamename.value + '&user=' + algusername)
-//		.then(function(response) {
-//
-//		if(response.data.gameready == false){
-//			
-//			
-//			
-//		}
-//
-//
-//
-//
-//		})
-//
-//
-//}
 
 
 
