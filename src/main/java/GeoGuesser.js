@@ -2,7 +2,6 @@ let map;
 let markers = [];
 let alglat;
 let alglng;
-let locationrandom;
 let algpanorama;
 let randomcountry;
 let markercountry;
@@ -15,27 +14,25 @@ let totalscore;
 let algusername;
 let alggamename;
 
-
+var WelcomeSound = new Audio("geoguesserSoundsAndVideos/welcome.mp4");
+WelcomeSound.volume = 0.25;
+var MenuSound = new Audio("geoguesserSoundsAndVideos/earthmusic.mp4");
+MenuSound.volume = 0.2;
+var HoverSound = new Audio("geoguesserSoundsAndVideos/hover.mp4");
+HoverSound.volume = 0.2;
+var WhooshSound = new Audio("geoguesserSoundsAndVideos/whoosh.mp4");
+WhooshSound.volume = 0.3;
+var WarpSound = new Audio("geoguesserSoundsAndVideos/warp.mp4");
+WarpSound.volume = 0.2;
+var TimerSound = new Audio("geoguesserSoundsAndVideos/timer.wav");
+TimerSound.volume = 0.4;
+var CorrectSound = new Audio("geoguesserSoundsAndVideos/correct.mp4");
+CorrectSound.volume = 0.3;
+var WrongSound = new Audio("geoguesserSoundsAndVideos/wrong.mp4");
+WrongSound.volume = 0.25;
+var WinnerSound = new Audio("geoguesserSoundsAndVideos/winner.mp4");
 
 const sv = new google.maps.StreetViewService();
-
-var WelcomeSound = new Audio("welcome.mp4");
-WelcomeSound.volume = 0.25;
-var MenuSound = new Audio("earthmusic.mp4");
-MenuSound.volume = 0.2;
-var HoverSound = new Audio("hover.mp4");
-HoverSound.volume = 0.2;
-var WhooshSound = new Audio("whoosh.mp4");
-WhooshSound.volume = 0.3;
-var WarpSound = new Audio("warp.mp4");
-WarpSound.volume = 0.2;
-var TimerSound = new Audio("timer.wav");
-TimerSound.volume = 0.4;
-var CorrectSound = new Audio("correct.mp4");
-CorrectSound.volume = 0.3;
-var WrongSound = new Audio("wrong.mp4");
-WrongSound.volume = 0.25;
-var WinnerSound = new Audio("winner.mp4");
 
 document.getElementById("guess").disabled = true;
 
@@ -43,12 +40,11 @@ function sounds() {
 
 	var playBtn = document.getElementById('play')
 	var lobbyBtn = document.getElementById('lobby')
+	var settingsBtn = document.getElementById('settings')
 	var backBtn = document.getElementById('back')
 
 	playBtn.addEventListener('mouseover', function() {
-
 		HoverSound.play();
-
 	}, false);
 
 	playBtn.addEventListener('mouseleave', function() {
@@ -56,10 +52,17 @@ function sounds() {
 		HoverSound.currentTime = 0;
 	}, false);
 
-	lobbyBtn.addEventListener('mouseover', function() {
-
+	settingsBtn.addEventListener('mouseover', function() {
 		HoverSound.play();
+	}, false);
 
+	settingsBtn.addEventListener('mouseleave', function() {
+		HoverSound.pause();
+		HoverSound.currentTime = 0;
+	}, false);
+
+	lobbyBtn.addEventListener('mouseover', function() {
+		HoverSound.play();
 	}, false);
 
 	lobbyBtn.addEventListener('mouseleave', function() {
@@ -68,9 +71,7 @@ function sounds() {
 	}, false);
 
 	backBtn.addEventListener('mouseover', function() {
-
 		HoverSound.play();
-
 	}, false);
 
 	backBtn.addEventListener('mouseleave', function() {
@@ -80,27 +81,16 @@ function sounds() {
 
 }
 
-
-
 function login() {
 	MenuSound.play();
 	WelcomeSound.play();
 	document.getElementById("loginmenu").style.display = "block";
 	document.getElementById("login").style.display = "none";
-
-
-
-
 }
-
-
 
 function createaccount() {
 
-
 	randomid = Math.floor(Math.random() * 100000);
-
-
 
 	var username = document.getElementById("loginbox");
 	var usernameoutput = document.getElementById("usernamevalue");
@@ -111,23 +101,15 @@ function createaccount() {
 		.then(function(response) {
 			speler1 = response.data.speler1;
 			user1 = username.value;
-			console.log("username.value= " + username.value);
-			console.log("randomid= " + randomid);
-			console.log("response.data.speler1= " + response.data.user)
-			console.log(response);
 
 			if (response.data.user == "error" || response.data.password == "error" && response.data.correct == 0) {
 
 				document.getElementById("loginerror").style.display = "block";
-				console.log("ERROR!!!");
-
 
 			} else if (response.data.correct == 1) {
-				console.log('test correct')
 				document.getElementById("mainmenu").style.display = "block";
 				document.getElementById("loginmenu").style.display = "none";
 				document.getElementById("usernamevalue").style.display = "block";
-				//				document.getElementById("profilepicture").style.display = "block";
 				document.getElementById("loginerror").style.display = "none";
 				algusername = username.value;
 
@@ -139,43 +121,28 @@ function createaccount() {
 				document.getElementById("loginerror").style.display = "none";
 
 			}
-
-
 		})
 	username.oninput = function() {
 		usernameoutput.innerHTML = this.value;
-
-
 	}
-
-
 }
-
-
-
-
 
 const rooms = [];
 function createroom() {
 
-
 	randomid = Math.floor(Math.random() * 100000);
-
 	gamename = document.getElementById("roomnamevalue");
-
 
 	var ul = document.getElementById("roomlist");
 	var li = document.createElement("li");
 	var btn = document.createElement("button");
 
-
+	document.getElementById("roomlist").style.display = "block";
 
 	axios.get('http://localhost:8080/createroom?gameid=' + randomid + '&gamename=' + gamename.value + '&user=' + algusername)
 		.then(function(response) {
 
 			alggamename = gamename.value;
-
-
 
 			li.appendChild(document.createTextNode(gamename.value));
 			li.appendChild(btn);
@@ -184,41 +151,26 @@ function createroom() {
 			btn.innerText = "Join";
 			ul.appendChild(btn);
 
-
 			refresh();
-
-
-
-
-
 		})
-
 	backlobby();
-
 }
-
 
 function refresh() {
 
 	const rooms = [];
 
 	var ul = document.getElementById("roomlist");
-
+	document.getElementById("roomlist").style.display = "block";
 
 	while (ul.firstChild) {
 		ul.removeChild(ul.firstChild);
 	}
 
-
 	axios.get('http://localhost:8080/room')
 		.then(function(response) {
 
-
-
-
-
 			for (let i = 0; i < response.data.length; i++) {
-
 
 				var li = document.createElement("li");
 				var btn = document.createElement("button");
@@ -231,41 +183,36 @@ function refresh() {
 				ul.appendChild(li);
 				btn.classList.add("joinbutton");
 				btn.innerText = "Join";
-
 			}
-
-
-
-
-
-			console.log(rooms)
-
-
-
-			console.log(algusername);
-
-
 		})
-
-
-
 }
 
-
-
-
-
 function play() {
+
 	setTimeout(randomlocation, 2800);
 	document.getElementById("jupiter").style.display = "none";
 	document.getElementById("mainmenu").style.display = "none";
 	document.getElementById('earth').style.animation = "zoom 3s 1";
 	WarpSound.play();
 
-
 }
 
+function settings() {
+	document.getElementById("jupiter").style.display = "block";
+	document.getElementById("mainmenu").style.display = "none";
+	document.getElementById('earth').style.animation = "leftrightearth 0.5s ";
+	document.getElementById('jupiter').style.animation = "rightleftjup 0.5s ";
+	document.getElementById("earth").style.filter = "blur(10px)";
+	document.getElementById("jupiter").style.filter = "blur(10px) brightness(50%)";
+	WhooshSound.play();
 
+	setTimeout(() => {
+		document.getElementById("settingsmenu").style.display = "block";
+		document.getElementById("earth").style.filter = "blur(0px)";
+		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
+
+	}, 500);
+}
 
 function lobby() {
 	document.getElementById("jupiter").style.display = "block";
@@ -274,7 +221,6 @@ function lobby() {
 	document.getElementById('jupiter').style.animation = "rightleftjup 0.5s ";
 	document.getElementById("earth").style.filter = "blur(10px)";
 	document.getElementById("jupiter").style.filter = "blur(10px) brightness(50%)";
-
 	WhooshSound.play();
 
 	setTimeout(() => {
@@ -283,12 +229,11 @@ function lobby() {
 		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
 
 	}, 500);
-
 }
 
 function room() {
-	document.getElementById("roommenu").style.display = "block";
 
+	document.getElementById("roommenu").style.display = "block";
 
 }
 
@@ -308,17 +253,16 @@ slider2.oninput = function() {
 	output2.innerHTML = this.value;
 }
 
-
-
 function back() {
 	document.getElementById("earth").style.display = "block";
 	document.getElementById("lobbymenu").style.display = "none";
+	document.getElementById("settingsmenu").style.display = "none";
 	document.getElementById('earth').style.animation = "rightleftearth 0.5s ";
 	document.getElementById('jupiter').style.animation = "leftrightjup 0.5s ";
 	document.getElementById("earth").style.filter = "blur(5px)";
 	document.getElementById("jupiter").style.filter = "blur(5px) brightness(50%)";
 	document.getElementById("roommenu").style.display = "none";
-
+	document.getElementById("roomlist").style.display = "none";
 	WhooshSound.play();
 
 	setTimeout(() => {
@@ -328,8 +272,6 @@ function back() {
 		document.getElementById("jupiter").style.filter = "blur(0px) brightness(50%)";
 
 	}, 490);
-
-
 }
 
 function backlobby() {
@@ -339,55 +281,7 @@ function backlobby() {
 	document.getElementById("lobbymenu").style.display = "block";
 	document.getElementById("roommenu").style.display = "none";
 
-
 }
-
-//function initialize() {
-//
-//	document.getElementById("earth").style.display = "none";
-//	document.getElementById("main").style.display = "block";
-//	MenuSound.pause();
-//	MenuSound.currentTime = 0;
-//
-//	const fenway = { lat: 42.345573, lng: -71.098326 };
-//
-//	const midden = { lat: 0, lng: 0, };
-//	const map = new google.maps.Map(document.getElementById("map"), {
-//
-//		disableDefaultUI: true,
-//		center: midden,
-//		zoom: 1,
-//	});
-//
-//	google.maps.event.addListener(map, "click", (event) => {
-//		deleteMarker(event.latLng, map);
-//		addMarker(event.latLng, map);
-//		document.getElementById("guess").disabled = false;
-//		console.log("de coordinaten van deze marker zijn " + location)
-//
-//	});
-//
-//
-//	const panorama = new google.maps.StreetViewPanorama(
-//		document.getElementById("pano"),
-//		{
-//			disableDefaultUI: true,
-//			showRoadLabels: false,
-//
-//			position: fenway,
-//			pov: {
-//				heading: 34,
-//				pitch: 10,
-//			},
-//
-//		}
-//
-//	);
-//
-//	map.setStreetView(panorama);
-//}
-
-
 
 function countdown() {
 
@@ -395,17 +289,14 @@ function countdown() {
 	let Timer = setInterval(function() {
 		algtimeleft = timeleft;
 
-
-
-
 		if (timeleft <= 11) {
 
 			TimerSound.play();
 			document.getElementById("countdown").style.animation = "alarm 1s infinite";
-
 			document.getElementById("countdown").innerHTML = timeleft;
 
 		} if (timeleft <= 0) {
+			
 			TimerSound.pause();
 			TimerSound.currentTime = 0;
 			clearInterval(Timer);
@@ -418,14 +309,11 @@ function countdown() {
 			document.getElementById("countdown").innerHTML = timeleft;
 
 		}
-
 		timeleft -= 1;
-
+		
 	}, 1000);
 	algTimer = Timer;
-
 }
-
 
 function randomlocation() {
 	var rounds = slider2.value;
@@ -435,21 +323,15 @@ function randomlocation() {
 	MenuSound.currentTime = 0;
 	TimerSound.pause();
 	TimerSound.currentTime = 0;
-
 	countdown();
-
 	document.getElementById('rounds').innerHTML = "Round " + aantal + "/" + rounds;
 
-
-	console.log("oekaboeka" + aantal);
 	if (aantal > rounds) {
 
 		document.getElementById("main").style.display = "none";
 		document.getElementById("pano").style.display = "none";
 		document.getElementById("end").style.display = "block";
 		document.getElementById("finalscore").innerHTML = "Congratulations! You have " + totalscore + " points";
-
-
 		clearInterval(algTimer);
 		WinnerSound.play();
 
@@ -463,19 +345,16 @@ function randomlocation() {
 			let lng = response.data.lng;
 			alglng = lng;
 			var location = new google.maps.LatLng({ lat: lat, lng: lng })
-			locationrandom = location;
 
 			sv.getPanorama({
-				location: locationrandom, radius: 100,
+				location: location, radius: 100,
 			})
 				.then(processSVData)
 				.catch((e) =>
 					console.error("Nieuwe locatie"),
-					sv.getPanorama({ location: locationrandom, radius: 1000000, })
+					sv.getPanorama({ location: location, radius: 1000000, })
 						.then(processSVData)
 				)
-
-
 
 			const geocoder = new google.maps.Geocoder();
 			const midden = { lat: 0, lng: 0 };
@@ -485,14 +364,12 @@ function randomlocation() {
 				zoom: 1,
 			});
 
-
 			google.maps.event.addListener(map, "click", (event) => {
 				deleteMarker(event.latLng, map);
 				addMarker(event.latLng, map);
 				document.getElementById("guess").disabled = false;
 
 			});
-
 
 			geocoder
 				.geocode({ location: location })
@@ -503,9 +380,7 @@ function randomlocation() {
 							return address_component.types.includes("country");
 						});
 						var country = filtered_array.length ? filtered_array[0].long_name : "";
-						console.log("we zitten in " + country);
 						randomcountry = country;
-
 
 					} else {
 						window.alert("No results found");
@@ -519,7 +394,6 @@ function randomlocation() {
 
 			const panorama = new google.maps.StreetViewPanorama(
 				document.getElementById("pano"),
-
 
 				{
 					disableDefaultUI: true,
@@ -535,15 +409,11 @@ function randomlocation() {
 			)
 
 			algpanorama = panorama;
-
 			map.setStreetView(panorama);
-
-			console.log("de coordinaten van deze randompositie zijn " + location)
 
 		}
 		)
 }
-
 
 function addMarker(location, map) {
 	const geocoder = new google.maps.Geocoder();
@@ -556,8 +426,6 @@ function addMarker(location, map) {
 	axios.get('http://localhost:8080/afstand?lat=' + alglat + '&lng=' + alglng + '&lat2=' + location.lat() + '&lng2=' + location.lng())
 		.then(function(response) {
 			kmafstand = response.data / 1000;
-
-			console.log(locationrandom + " ligt " + kmafstand + " km " + location);
 			afstand = Math.round(kmafstand);
 
 		})
@@ -604,7 +472,6 @@ function scoresystem() {
 		document.getElementById('score').innerHTML = "score: " + score;
 		document.getElementById('scorecountry').innerHTML = "country + 200";
 		document.getElementById('scorecountry').style.animation = "fade 4.10s";
-
 		CorrectSound.play();
 
 	} else {
@@ -620,7 +487,6 @@ function scoresystem() {
 		document.getElementById('score').innerHTML = "score: " + score;
 		document.getElementById('scoredistance').innerHTML = "distance + " + kmscore;
 		document.getElementById('scoredistance').style.animation = "fade 2.80s";
-
 
 	}
 
@@ -638,7 +504,6 @@ function scoresystem() {
 	}
 	totalscore = score;
 
-
 }
 
 
@@ -649,20 +514,16 @@ function guess() {
 	console.log("marker country: " + markercountry)
 
 	scoresystem();
-
 	TimerSound.pause();
 	TimerSound.currentTime = 0;
 	clearInterval(algTimer);
 	randomlocation();
 
-	console.log(afstand + "km");
-
-
-
 }
 
 
 function gomenu() {
+	document.getElementById('earth').style.animation = "none";
 	MenuSound.play();
 	aantal = 0;
 	totalscore = 0;
@@ -671,8 +532,6 @@ function gomenu() {
 	document.getElementById("end").style.display = "none";
 	WinnerSound.pause();
 	WinnerSound.currentTime = 0;
-
-
 
 }
 
@@ -709,23 +568,3 @@ function reflow() {
 	reflow1.offsetHeight;
 	reflow1.style.animation = null;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-// aanpassen zodat je niet meerdere keren achterelkaar in hetzelfde land komt (vaak in China)
-//event listener verwijderen -> zodat je niet meerdere keren kunt antwoorden
-//bug: als je terug naar menu gaat speelt de zoom in animatie
-//bug: kan meerdere keren op play klikken.
-//inlogscherm / create and join roomm
-//extra: profielfoto
-
-

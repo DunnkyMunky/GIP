@@ -4,6 +4,14 @@ html, body {
 	margin: 0.01%;
 }
 
+#end {
+	display: none;
+}
+
+#jupiter {
+	display: none;
+}
+
 #loginmenu {
 	display: none;
 }
@@ -13,6 +21,10 @@ html, body {
 }
 
 #mainmenu {
+	display: none;
+}
+
+#settingsmenu{
 	display: none;
 }
 
@@ -36,19 +48,10 @@ html, body {
 	padding: 1.4%;
 }
 
-#profilepicture {
-	width: 8%;
-	height: 9%;
-	position: absolute;
-	left: 92%;
-	top: 0.5%;
-	z-index: 2;
-}
-
 #text1 {
 	color: white;
 	position: absolute;
-	left: 65%;
+	left: 45%;
 	top: 23%;
 	height: 10%;
 	width: 40%;
@@ -58,7 +61,7 @@ html, body {
 #text2 {
 	color: white;
 	position: absolute;
-	left: 65%;
+	left: 45%;
 	top: 53%;
 	height: 10%;
 	width: 40%;
@@ -67,14 +70,14 @@ html, body {
 
 .slidecontainer1 {
 	top: 35%;
-	left: 60%;
+	left: 30%;
 	position: absolute;
 	width: 35%;
 }
 
 .slidecontainer2 {
 	top: 65%;
-	left: 60%;
+	left: 30%;
 	position: absolute;
 	width: 35%;
 }
@@ -91,7 +94,7 @@ html, body {
 	appearance: none;
 	width: 70px;
 	height: 70px;
-	background: url('star.png');
+	background: url('geoguesserSoundsAndVideos/star.png');
 	cursor: pointer;
 }
 
@@ -103,10 +106,6 @@ html, body {
 #slidervalue2 {
 	position: absolute;
 	color: lightyellow;
-}
-
-#jupiter {
-	display: none;
 }
 
 #login {
@@ -145,12 +144,23 @@ html, body {
 	z-index: 2;
 }
 
-#lobby {
+#settings {
 	color: orange;
 	background-color: black;
 	position: absolute;
 	left: 5%;
 	top: 30%;
+	height: 5%;
+	width: 15%;
+	z-index: 2;
+}
+
+#lobby {
+	color: orange;
+	background-color: black;
+	position: absolute;
+	left: 5%;
+	top: 40%;
 	height: 5%;
 	width: 15%;
 	z-index: 2;
@@ -173,9 +183,6 @@ li{
 	height: 150%;
 
 }
-
-
-
 
 #room {
 	color: white;
@@ -313,18 +320,6 @@ li{
 	border-radius: 10%;
 	font-size: 100%;
 }
-.closebutton {
-	color: white;
-	background-color: red;
-	position: absolute;
-	left: 240%;
-	height: 80%;
-	width: 15%;
-	z-index: 2;
-	border-radius: 30%;
-	font-size: 100%;
-}
-
 
 #roommenu {
 	border-radius: 10%;
@@ -398,6 +393,11 @@ li{
 }
 
 #lobby:hover {
+	color: black;
+	background-color: orange;
+}
+
+#settings:hover {
 	color: black;
 	background-color: orange;
 }
@@ -531,7 +531,6 @@ li{
 	opacity: 40%;
 	transition: width 1s, height 1s, top 1s;
 }
-/* makes the buttons opacity 100% and makes the cursor a pointer when the button is enabled */
 .guess:enabled {
 	opacity: 100%;
 	cursor: pointer;
@@ -582,10 +581,6 @@ li{
 	top: 60%;
 	height: 5%;
 	width: 15%;
-}
-
-#end {
-	display: none;
 }
 
 /* makes an appear and disappear animation */

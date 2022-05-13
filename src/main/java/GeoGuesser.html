@@ -8,22 +8,14 @@
 <title>GeoGuesser</title>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
 <script src="GeoGuesser.js" defer></script>
 <link rel="stylesheet" href="GeoGuesser.css">
 
-
-
 </head>
 
-
-
-
 <body onload="sounds()">
-
-
 
 	<div class="flex-container">
 		<div>
@@ -32,30 +24,26 @@
 	</div>
 
 	<video autoplay muted loop id="earth">
-		<source src="earth.mp4" type="video/mp4">
+		<source src="geoguesserSoundsAndVideos/earth.mp4" type="video/mp4">
 	</video>
 
-
 	<video autoplay muted loop id="jupiter">
-		<source src="Jupiter.mp4" type="video/mp4">
+		<source src="geoguesserSoundsAndVideos/Jupiter.mp4" type="video/mp4">
 	</video>
 
 	<button id="login" onclick="login()">LOGIN</button>
-
 
 	<div id="loginmenu">
 		<p id="logintext">Welcome</p>
 		<p id="logintext2">Please state your name</p>
 		<p id="loginerror">This username already exists.</p>
 
-
 		<input type="text" id="loginbox" name="loginbox" required
-			minlength="3" maxlength="15" size="30"
-			placeholder="e.g. Neil Armstrong">
+			maxlength="15" size="30" placeholder="e.g. Neil Armstrong">
 
 		<p id="logintext3">Password</p>
 		<input type="password" id="passwordbox" name="passwordbox" required
-			minlength="3" maxlength="25" size="25" placeholder="e.g. 1234">
+			maxlength="20" size="25" placeholder="e.g. 1234">
 
 		<button id="createaccount" onclick="createaccount()">CREATE</button>
 
@@ -63,38 +51,12 @@
 
 	<div id="mainmenu">
 		<button id="play" onclick="play()">PLAY</button>
+		<button id="settings" onclick="settings()">SETTINGS</button>
 		<button id="lobby" onclick="lobby()">LOBBY</button>
 	</div>
 
-
-	<div id="lobbymenu">
-
-		<button id="back" onclick="back()">go back</button>
-		<button id="room" onclick="room()">Create A Room</button>4
-		<button id="refresh" onclick="refresh()">Refresh</button>
-		
-		<H1 id="roomstext">Current Rooms</H1>
-		
-		
-
-	</div>
-
-	<ul id="roomlist">
-		
-	</ul>
-
-
-
-
-	<div id="roommenu">
-
-		<p id="roomname">Room name</p>
-
-		<input type="text" id="roomnamevalue" name="roomnamevalue" required
-			minlength="3" maxlength="15" size="30" placeholder="e.g. 6IB"><br>
-		<br>
-
-
+	<div id="settingsmenu">
+		<button id="back" onclick="back()">Go Back</button>
 		<p id="text1">Seconds Per Round</p>
 		<div class="slidecontainer1">
 			<input type="range" min="20" max="90" value="40" step="10"
@@ -109,13 +71,33 @@
 
 		</div>
 
+	</div>
 
-		<button id="createroom" onclick="createroom()">CREATE</button>
+	<div id="lobbymenu">
 
-		<button id="backlobby" onclick="backlobby()">close</button>
+		<button id="back" onclick="back()">Go Back</button>
+		<button id="room" onclick="room()">Create A Room</button>
+		<button id="refresh" onclick="refresh()">Refresh</button>
+
+		<H1 id="roomstext">Current Rooms</H1>
 
 	</div>
 
+	<ul id="roomlist">
+
+	</ul>
+
+	<div id="roommenu">
+
+		<p id="roomname">Room Name</p>
+
+		<input type="text" id="roomnamevalue" name="roomnamevalue" required
+			maxlength="15" size="30" placeholder="e.g. 6IB">
+
+		<button id="createroom" onclick="createroom()">CREATE</button>
+		<button id="backlobby" onclick="backlobby()">close</button>
+
+	</div>
 
 	<div id="main">
 
@@ -135,8 +117,6 @@
 			<button id="guess" class="guess" onclick="guess()">GUESS</button>
 
 		</div>
-
-
 	</div>
 
 	<div id="end">
@@ -149,15 +129,7 @@
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=&v=weekly"></script>
 
-
-
-
-
-
-
-
-
-
 </body>
+
 
 </html>
